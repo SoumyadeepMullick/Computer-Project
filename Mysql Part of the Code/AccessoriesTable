@@ -1,0 +1,23 @@
+#create database clothing
+show databases;
+create database if not exists Clothing;
+use Clothing;
+create table Accesories
+  (Itemno integer,
+   Itemname char(25),
+   price integer(4),
+   quantity integer(4),
+   type char(100));
+
+
+#Accesories are watches ,belts ,glasses ,Jewelry,Handbags,bags,shoes
+#Itemno for accesories starts from 100 like 100,101,102,103 and so on
+
+insert into Accesories(Itemno,Itemname,price,quantity,type)
+      values
+                (100,'Watches',2000,25,'Men and Women'),
+                (102,'Belts',500,50,'Men and women'),
+                (103,'Glasses',1000,40,'Men and women'),
+                (104,'Handbags',1100,50,'Women'),
+                (105,'Shoes',500,100,'Men and women');
+                

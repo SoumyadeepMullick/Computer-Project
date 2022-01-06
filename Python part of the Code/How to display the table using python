@@ -1,0 +1,25 @@
+# python program to display a table
+
+import mysql.connector
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="[THE PASSWORD]",
+    database="clothing"
+    )
+#places cursor
+
+mycursor = mydb.cursor()
+
+#executes the  code at the position of the cursor
+
+mycursor.execute("select * from accesories;")
+
+#fetchall fetches the output of the above program and stores it in myresult
+myresult = mycursor.fetchall()
+
+#prints myresult
+ for x in myresult:
+    print(x)
+
+#you need to make a program to take choice from user and then use (if) statements for different choices

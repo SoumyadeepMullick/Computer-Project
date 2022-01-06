@@ -1,0 +1,6 @@
+#How to show images
+
+from PIL import image,ImageFont,ImageDraw
+image=Image.open(r'FILE_PATH')
+draw=ImageDraw.Draw(image1)
+image.show()
