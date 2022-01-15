@@ -1,0 +1,136 @@
+print(" WELCOME TO SAMAIRA CLOTHING & ACCESSORIES ")
+print("PRESS 1 TO LOGIN AS A STAFF")
+print("PRESS 2 TO LOGIN AS A CUSTOMER")
+
+c=int(input("enter 1 or 2:"))
+if c==1:
+    p="password"
+    u=input("enter password:")
+    if u==p:
+        import mysql.connector as mycon
+        con = mycon.connect(host='localhost', user='root', password = "hello")
+        cur = con.cursor()
+        cur.execute("create database if not exists MANAGEMENT")
+        cur.execute("use MANAGEMENT")
+        cur.execute("create table if not exists ITEMS(ITEMNO char(4) primary key, CATEGORY_1 char(15),CATEGORY_2 char(10))")
+        con.commit()
+        choice=None
+        while choice!=0:
+            print("PRESS 1 TO ADD RECORD")
+            print("PRESS 2 TO DISPLAY ENTIRE CONTENT OF THE TABLE")
+            print("PRESS 3 TO DELETE RECORD")
+            print("PRESS 0 TO EXIT")
+
+            choice = int(input("Enter Choice :"))
+            if choice == 1:
+                  n = (input("Enter Item Number :"))
+                  c1 = input("Enter category1(cloth/accessory):")
+                  c2 = (input("Enter category2(men/women/kids) :"))
+       
+                  query="insert into ITEMS values('{}','{}','{}')".format(n,c1,c2)
+                  cur.execute(query)
+                  con.commit()
+                  print("## Data Saved ##")
+            elif choice == 2:
+                  query="select * from ITEMS"
+                  cur.execute(query)
+                  result = cur.fetchall()
+                  print("%10s"%"ITEMNO","%20s"%"CATEGORY_1","%15s"%"CATEGORY_2")
+                  for row in result:
+                          print("%10s"%row[0],"%20s"%row[1],"%15s"%row[2])
+    
+            elif choice==3:
+                  no=input("enter the itemno which you want to delete:")
+                  ans="y"
+                  while ans.lower()=='y':
+            
+                     query="select * from ITEMS where ITEMNO={}".format(no)
+                     cur.execute(query)
+                     result = cur.fetchall()
+                     if cur.rowcount==0:
+                          print("Sorry! Item not found ")
+                     else:
+                          print("%10s"%"ITEMNO","%20s"%"CATEGORY_1", "%15s"%"CATEGORY_2")
+                     for row in result:
+                          print("%10s"%row[0],"%20s"%row[1],"%15s"%row[2])
+                     choice=input("\n## ARE YOUR SURE TO DELETE ? (Y) :")
+                     if choice.lower()=='y':
+                        query="delete from ITEMS where ITEMNO={}".format(no) 
+                        cur.execute(query)
+                        con.commit()
+                     print("===RECORD DELETED SUCCESSFULLY!===")
+                     ans=input("DELETE MORE ?(Y):")
+    
+            
+            
+            elif choice==0:
+               con.close()
+               print("## EXIT!! ##")
+            else:
+               print("## INVALID CHOICE ##")
+            print("DO YOU WANT TO ADD,UPDATE OR DELETE RECORDS FROM TABLE WOMEN?")
+            j=input("ENTER (Y/N):")
+            if j.lower()=='y':
+                  import mysql.connector as mycon
+                  con = mycon.connect(host='localhost', user='root', password = "hello")
+                  cur = con.cursor()
+                  cur.execute("create database if not exists MANAGEMENT")
+                  cur.execute("use MANAGEMENT")
+                  cur.execute("create table if not exists WOMEN(ITEMNO char(4) ,ITEMNAME char(20),COLOUR char(15),SIZE char(10),PRICE int(5),QUANTITY char(15))")
+                  con.commit()
+                  choice=None
+                  while choice!=0:
+                      print("PRESS 1 TO ADD RECORD INTO TABLE WOMEN")
+                      print("PRESS 2 TO DISPLAY ENTIRE CONTENT OF THE TABLE WOMEN")
+                      print("PRESS 3 TO UPDATE RECORD OF THE TABLE WOMEN")
+                      print("PRESS 4 TO DELETE RECORD OF THE TABLE WOMEN")
+                      print("PRESS 0 TO EXIT")
+                      choice = int(input("Enter Choice :"))
+                      if choice == 1:
+                            n = (input("Enter Item Number :"))
+                            wn = input("Enter Item Name:")
+                            wc = (input("Enter Item colour:"))
+                            ws=(input("Enter Item size:"))
+                            wp=int(input("Enter Item price:"))
+                            wq=(input("Enter no of items in stock:"))
+                            query="insert into WOMEN values('{}','{}','{}','{}',{},'{}')".format(n,wn,wc,ws,wp,wq)
+                            cur.execute(query)
+                            con.commit()
+                            print("## Data Saved ##")
+                      elif choice==2:
+                          query="select * from WOMEN"
+                          cur.execute(query)
+                          result = cur.fetchall()
+                          print("%10s"%"ITEMNO","%20s"%"ITEMNAME","%15s"%"COLOUR","%15s"%"SIZE","%15s"%"PRICE","%15s"%"QUANTITY")
+                          for row in result:
+                                print("%10s"%row[0],"%20s"%row[1],"%15s"%row[2],"%15s"%row[3],"%15s"%row[4],"%15s"%row[5])
+                      elif choice==3:
+                        ans='y'
+                        while ans.lower()=='y':
+                             ino = (input("ENTER ITEMNO TO UPDATE :"))
+                             query="select * from WOMEN where ITEMNO='{}'".format(ino)
+                             cur.execute(query)
+                             result = cur.fetchall()
+                             break
+                             
+                        if cur.rowcount==0:
+                             print("Sorry! Item not found ")
+                        else:
+                             print("%10s"%"ITEMNO","%20s"%"ITEMNAME","%15s"%"COLOUR","%15s"%"SIZE","%15s"%"PRICE","%15s"%"QUANTITY")
+                        for row in result:
+                             print("%10s"%row[0],"%20s"%row[1],"%15s"%row[2],"%15s"%row[3],"%15s"%row[4],"%15s"%row[5])
+                        choice=input("\n## ARE YOUR SURE TO UPDATE ? (Y) :")
+                        if choice.lower()=='y':
+                              print("== YOU CAN UPDATE ONLY PRICE AND QUANTITY ==")
+                              print("== FOR ITEMNO AND ITEMNAME CONTACT ADMIN ==")
+                              d = input("ENTER NEW PRICE,(LEAVE BLANK IF NOT WANT TO CHANGE )")
+                              if d=="":
+                                   d=row[4]
+                              s = input("ENTER NEW QUANTITY,(LEAVE BLANK IF NOT WANT TO CHANGE ) ")
+                              if s == "":
+                                   s=row[5]
+                        query="update WOMEN set PRICE={},QUANTITY='{}' where ITEMNO='{}'".format(d,s,ino)
+                        cur.execute(query)
+                        con.commit()
+                        print("## RECORD UPDATED ## ")
+                        ans=input("UPDATE MORE (Y) :")
